@@ -46,11 +46,11 @@
         options.show_points.processed = new Array();
         $(lat).each(function(i){
           options.show_points.processed.push({
-            lat: $("[name=" +options.show_points.lat + "[" + i + "]]").val(),
-            lng: $("[name=" +options.show_points.lng + "[" + i + "]]").val(),
-            infowindow: $("[name=" +options.show_points.infowindow + "[" + i + "]]").val() || $("[name=" +options.show_points.infowindow + "[" + i + "]]").html(),
-            icon: $("[name=" +options.show_points.marker.icon + "[" + i + "]]").val(),
-            shadow: $("[name=" +options.show_points.marker.shadow + "[" + i + "]]").val()
+            lat: $("[name=\"" +options.show_points.lat + "[" + i + "]\"]").val(),
+            lng: $("[name=\"" +options.show_points.lng + "[" + i + "]\"]").val(),
+            infowindow: $("[name=\"" +options.show_points.infowindow + "[" + i + "]\"]").val() || $("[name=\"" +options.show_points.infowindow + "[" + i + "]\"]").html(),
+            icon: $("[name=\"" +options.show_points.marker.icon + "[" + i + "]\"]").val(),
+            shadow: $("[name=\"" +options.show_points.marker.shadow + "[" + i + "]\"]").val()
           });
         });
         $.fn.Gmap.show_points = {};
@@ -217,6 +217,11 @@
               infowindow_baloon.setContent(infowindow_text);
               infowindow_baloon.open(map, this);
             });
+            
+            if ($.inArray(i, options.show_points.infowindow_options.opened) != -1) {
+              infowindow_baloon.setContent(infowindow_text);
+              infowindow_baloon.open(map, markers[i]);
+            }
          });
 
         if (typeof bounds != "undefined" && options.show_points.autofit) {
@@ -319,7 +324,8 @@
         dragend: null
       },
       infowindow_options: {
-        disableAutoPan: true
+        disableAutoPan: true,
+        opened: []
       },
       autofit: true,
       icon:{
