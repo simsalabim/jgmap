@@ -1,4 +1,5 @@
 jQuery plugin to work Google Maps Api v3 
+(moved from http://code.google.com/p/jgmap/)
 
 This plugin allows you to show multiple markers on a map with custom icons and infowindows, optionally group them using https://github.com/simsalabim/gmaps.markermanager . Also you may specify target input to use for geocoding, correct its results dragging marker manually (or lock it), and track results. Originally forked from http://github.com/tristandunn/jquery-auto-geocoder. Functionality and conception were changed and extended. 
 
