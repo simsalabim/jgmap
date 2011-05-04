@@ -1,13 +1,13 @@
 /**
- * Плагин для работы с гугл-картами. Отображение заданного количества координат точек (опционально с информационными окнами по клику, группировкой маркеров 
- * на карте 'gmaps.markermanager'), геокодинг адреса из инпута (с отслеживанием координат для последующего сохранения, перетаскиваемым 
- * маркером в случае недоверия геокодингу, информационным окном), иконки маркеров настраиваются в параметрах.
- * 
- * пример использования: http://inline-ltd.ru/jgmap.html
- * 
- * @url forked from http://github.com/tristandunn/jquery-auto-geocoder
- * @author Александр Каупанин <kaupanin@gmail.com>
- */
+* Плагин для работы с гугл-картами. Отображение заданного количества координат точек (опционально с информационными окнами по клику, группировкой маркеров
+* на карте 'gmaps.markermanager'), геокодинг адреса из инпута (с отслеживанием координат для последующего сохранения, перетаскиваемым
+* маркером в случае недоверия геокодингу, информационным окном), иконки маркеров настраиваются в параметрах.
+*
+* пример использования: http://inline-ltd.ru/jgmap.html
+*
+* @url forked from http://github.com/tristandunn/jquery-auto-geocoder
+* @author Александр Каупанин <kaupanin@gmail.com>
+*/
 
 (function($) {
   var geocoder = new google.maps.Geocoder();
@@ -39,7 +39,7 @@
         );
       }
       var clarification = options.geocoder.clarification ? "#" + options.geocoder.clarification : "";
-      options.geocoder.clarification = (options.geocoder.clarification && $(clarification).html()) ?  $(clarification).html() : options.geocoder.clarification;
+      options.geocoder.clarification = (options.geocoder.clarification && $(clarification).html()) ? $(clarification).html() : options.geocoder.clarification;
       
       if (options.show_points) {
         var lat = $('[name^="' + options.show_points.lat + '["]');
@@ -65,17 +65,20 @@
         var me = this;
 
         $.fn.Gmap.initialized_map = $.fn.Gmap.initialized_map ? $.fn.Gmap.initialized_map : new google.maps.Map(me, options.initial);
-        var map = ext_map =  this.map = $.fn.Gmap.initialized_map;
+        var map = ext_map = this.map = $.fn.Gmap.initialized_map;
 
         if (options.geocoder.target) {
           options.geocoder.target = $("#" + options.geocoder.target);
+          if (options.geocoder.target.val()) {
+            self.trigger("geocoder-onChange");
+          }
           switch(options.geocoder.auto) {
-            case "onkeyup":
+            case "keyup":
               $(options.geocoder.target).keyup(function() {
                 setTimeout(function() {self.trigger("geocoder-onChange");}, options.geocoder.delay);
               });
               break;
-            case "onchange":
+            case "change":
               $(options.geocoder.target).change(function() {
                 self.trigger("geocoder-onChange");
               });
@@ -86,7 +89,7 @@
 
         if (options.geocoder.track_coordinates) {
           this.marker = this.marker || new google.maps.Marker(options.geocoder.track_coordinates.marker_options);
-          var infowindow_baloon  = infowindow_baloon || new google.maps.InfoWindow();
+          var infowindow_baloon = infowindow_baloon || new google.maps.InfoWindow();
           
           if ($(options.infowindow).val()) {
             google.maps.event.addListener(this.marker, "click", function() {
@@ -122,20 +125,20 @@
         if (options.show_points.on_zoom) {
           google.maps.event.addListener(this.map, "zoom_changed", function() {
               window[options.show_points.on_zoom].call(null, $.fn.Gmap);
-          });  
+          });
         }
         
         if (options.show_points.bounds_changed) {
           google.maps.event.addListener(this.map, "bounds_changed", function() {
             window[options.show_points.bounds_changed].call(null, $.fn.Gmap);
-          });  
+          });
         }
         if (options.initial.min_zoom) {
           google.maps.event.addListener(this.map, "zoom_changed", function() {
             if ($.fn.Gmap.initialized_map.getZoom() > options.initial.min_zoom) {
                 $.fn.Gmap.initialized_map.setZoom(options.initial.min_zoom);
               }
-          });  
+          });
         }
 
       });
@@ -151,7 +154,7 @@
             if (typeof markers[i] == "object") {
               markers[i].setMap(null); // ie fix
             }
-          }  
+          }
         }
         if (typeof marker_manager != "undefined") marker_manager.clear();
           markers = new Array();
@@ -250,7 +253,7 @@
       this.bind("geocoder-onChange", function() {
         var self = $(this);
         var address = $.trim(options.geocoder.target.val());
-        address = options.geocoder.clarification + " " + address;
+        address = options.geocoder.clarification ? (options.geocoder.clarification + " " + address) : address;
         if ($.fn.Gmap.last_address == address) {
           return;
         }
@@ -276,11 +279,13 @@
  
           this.marker = this.marker || new google.maps.Marker({draggable: options.geocoder.track_coordinates ? true : false});
           this.marker.setPosition(results[0].geometry.location);
-          if (options.geocoder.icon.src) {
-            this.marker.setIcon(new google.maps.MarkerImage(options.geocoder.icon.src));
-          }
-          if (options.geocoder.icon.shadow) {
-            this.marker.setShadow(new google.maps.MarkerImage(options.geocoder.icon.shadow));
+          if (typeof options.geocoder.icon != "undefined") {
+            if (typeof options.geocoder.icon.src != "undefined") {
+              this.marker.setIcon(new google.maps.MarkerImage(options.geocoder.icon.src));
+            }
+            if (typeof options.geocoder.icon.shadow != "undefined") {
+              this.marker.setShadow(new google.maps.MarkerImage(options.geocoder.icon.shadow));
+            }
           }
           this.marker.setMap(this.map);
           
@@ -365,7 +370,7 @@
     initial: {
       zoom: 1,
       center: [34, 0],
-      draggable: false,
+      draggable: true,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       mapTypeControl: false,
       min_zoom: 20
