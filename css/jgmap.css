@@ -1,0 +1,75 @@
+div#search-map{
+  width: 100%;
+  height: 500px;
+  border: 1px solid #CCCCCC;
+  position: relative;
+}
+
+.geocoging-results {
+  margin: 50px 0 0 0;
+}
+
+div.map{
+  position: relative;
+}
+div.map p.dsc{
+  position: absolute;
+  top: 35px;
+  left: 180px;
+}
+
+.favorites {
+  display: block;
+  float: left;
+  margin-left: 20px;
+}
+
+.favorites span.icon {
+  width: 22px;
+  padding-top: 21px;
+  height: 0;
+  overflow: hidden;
+  display: block;
+  float: left;
+  margin-top: 5px;
+  background: transparent url(../img/fav.gif) no-repeat 0 0;
+  margin:0 5px 0 0;
+}
+
+.favorites.selected span.icon {
+  background-position: 0 -66px;
+}
+
+.favorites.disable_ span.icon {
+  background-position: 0 -44px;
+}
+
+.favorites:hover span.icon {
+  background-position: 0 -22px;
+}
+
+.favorites.hover span.icon {
+  background-position: 0 -22px;
+}
+      
+.clear {
+  overflow:hidden;
+}
+
+.infowindow {
+  font-family:arial,helvetica,sans-serif;
+  font-size:13px;
+}
+
+.infowindow .info {
+  margin:7px 0 1px;
+}
+
+.infowindow .favorites {
+  margin:0 5px 0 10px;
+}
+
+.infowindow .title {
+  font-size:123%;
+  font-weight:bold;
+}
